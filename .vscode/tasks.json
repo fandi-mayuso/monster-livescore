@@ -1,0 +1,72 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Flutter: Run Dev",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["run", "--flavor", "dev", "-t", "lib/main/main_dev.dart"],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Flutter: Run Staging",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["run", "--flavor", "staging", "-t", "lib/main/main_staging.dart"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: Run Prod",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["run", "--flavor", "prod", "-t", "lib/main/main_prod.dart"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: Build APK Dev",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["build", "apk", "--flavor", "dev", "-t", "lib/main/main_dev.dart"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: Build APK Staging",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["build", "apk", "--flavor", "staging", "-t", "lib/main/main_staging.dart"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: Build APK Prod",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["build", "apk", "--flavor", "prod", "-t", "lib/main/main_prod.dart"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: Get Dependencies",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["pub", "get"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: Analyze",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["analyze"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter: Format Code",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["format", "lib/"],
+      "problemMatcher": []
+    }
+  ]
+}
