@@ -1,4 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:monster_livescore/core/utils/app_logger.dart';
 
 /// Enum to identify which environment/flavor is running
 enum Flavor { dev, staging, prod }
@@ -108,20 +109,20 @@ class FlavorConfig {
         value == '1';
   }
 
-  /// Log the current configuration
-  /// Useful for debugging to confirm correct flavor loaded
+  /// Log the current configuration.
+  /// Useful for debugging to confirm correct flavor loaded.
   static void _logConfiguration() {
-    print('═══════════════════════════════════════════════════════════');
-    print('📱 FlavorConfig Loaded');
-    print('═══════════════════════════════════════════════════════════');
-    print('🎯 Flavor: ${_instance.flavor.toString().split('.').last.toUpperCase()}');
-    print('📛 App Name: ${_instance.appName}');
-    print('🌐 API Base URL: ${_instance.apiBaseUrl}');
-    print('📊 Firebase Project: ${_instance.firebaseProjectId}');
-    print('📝 Log Level: ${_instance.logLevel}');
-    print('🔍 Debug Mode: ${_instance.enableLogging}');
-    print('📈 Analytics Enabled: ${_instance.enableAnalytics}');
-    print('═══════════════════════════════════════════════════════════');
+    logger.d('═══════════════════════════════════════════════════════════');
+    logger.d('📱 FlavorConfig Loaded');
+    logger.d('═══════════════════════════════════════════════════════════');
+    logger.d('🎯 Flavor: ${_instance.flavor.toString().split('.').last.toUpperCase()}');
+    logger.d('📛 App Name: ${_instance.appName}');
+    logger.d('🌐 API Base URL: ${_instance.apiBaseUrl}');
+    logger.d('📊 Firebase Project: ${_instance.firebaseProjectId}');
+    logger.d('📝 Log Level: ${_instance.logLevel}');
+    logger.d('🔍 Debug Mode: ${_instance.enableLogging}');
+    logger.d('📈 Analytics Enabled: ${_instance.enableAnalytics}');
+    logger.d('═══════════════════════════════════════════════════════════');
   }
 
   /// Check if the app is running in a specific flavor
@@ -138,4 +139,32 @@ class FlavorConfig {
 
   /// Get flavor name in uppercase
   String getFlavorNameUpperCase() => getFlavorName().toUpperCase();
+
+  /// Initialises the singleton directly from values — **only for use in tests**.
+  ///
+  /// Call this instead of [setFlavor] in widget and unit tests to avoid
+  /// loading `.env` files that are not present in the test environment.
+  ///
+  /// ```dart
+  /// setUp(() => FlavorConfig.setForTest());
+  /// ```
+  static void setForTest({
+    Flavor flavor = Flavor.dev,
+    String apiBaseUrl = 'https://test.example.com',
+    String appName = 'Monster Livescore Test',
+    bool enableLogging = false,
+    String firebaseProjectId = 'test-project',
+    String logLevel = 'DEBUG',
+    bool enableAnalytics = false,
+  }) {
+    _instance = FlavorConfig(
+      flavor: flavor,
+      apiBaseUrl: apiBaseUrl,
+      appName: appName,
+      enableLogging: enableLogging,
+      firebaseProjectId: firebaseProjectId,
+      logLevel: logLevel,
+      enableAnalytics: enableAnalytics,
+    );
+  }
 }
