@@ -51,17 +51,19 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    final elapsed = _elapsedMs(err.requestOptions);
-    final durationLabel = elapsed != null ? ' (${elapsed}ms)' : '';
+    if (FlavorConfig.instance.enableLogging) {
+      final elapsed = _elapsedMs(err.requestOptions);
+      final durationLabel = elapsed != null ? ' (${elapsed}ms)' : '';
 
-    logger.e(
-      '✗ [${err.type.name}] ${err.requestOptions.method} '
-      '${err.requestOptions.uri}$durationLabel\n'
-      '  Status : ${err.response?.statusCode ?? 'N/A'}\n'
-      '  Message: ${err.message}',
-      err,
-      err.stackTrace,
-    );
+      logger.e(
+        '✗ [${err.type.name}] ${err.requestOptions.method} '
+        '${err.requestOptions.uri}$durationLabel\n'
+        '  Status : ${err.response?.statusCode ?? 'N/A'}\n'
+        '  Message: ${err.message}',
+        err,
+        err.stackTrace,
+      );
+    }
 
     handler.next(err);
   }
