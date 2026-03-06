@@ -3,20 +3,21 @@ import 'package:monster_livescore/core/config/flavor_config.dart';
 
 /// Application-wide logger singleton wrapping the `logger` package.
 ///
-/// Use [AppLogger.instance] everywhere instead of `print()`.
+/// **Preferred usage** — import this file and use the top-level [logger]:
+/// ```dart
+/// import 'package:monster_livescore/core/utils/app_logger.dart';
+///
+/// logger.d('Fetching matches from API');
+/// logger.i('Matches loaded: ${matches.length}');
+/// logger.w('Retry attempt $attempt');
+/// logger.e('Repository failed', error, stackTrace);
+/// ```
+///
 /// Log level is driven by [FlavorConfig.instance.logLevel]:
 /// - `VERBOSE` / `DEBUG` → all levels active
 /// - `INFO`              → info, warning, error
 /// - `WARNING`           → warning, error
 /// - `ERROR`             → error only
-///
-/// Usage:
-/// ```dart
-/// AppLogger.instance.d('Fetching matches from API');
-/// AppLogger.instance.i('Matches loaded: ${matches.length}');
-/// AppLogger.instance.w('Retry attempt $attempt');
-/// AppLogger.instance.e('Repository failed: ${failure.message}');
-/// ```
 class AppLogger {
   AppLogger._internal();
 
@@ -70,3 +71,15 @@ class AppLogger {
   void e(String message, [Object? error, StackTrace? stackTrace]) =>
       _logger.e(message, error: error, stackTrace: stackTrace);
 }
+
+/// Top-level logger instance.
+///
+/// Import `app_logger.dart` once and call directly — no local setup needed:
+/// ```dart
+/// logger.d('debug');
+/// logger.i('info');
+/// logger.w('warning');
+/// logger.e('error', error, stackTrace);
+/// ```
+// ignore: non_constant_identifier_names — intentional short name for ergonomics
+final logger = AppLogger.instance;

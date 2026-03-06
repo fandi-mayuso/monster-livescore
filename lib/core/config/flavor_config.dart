@@ -112,17 +112,17 @@ class FlavorConfig {
   /// Log the current configuration.
   /// Useful for debugging to confirm correct flavor loaded.
   static void _logConfiguration() {
-    AppLogger.instance.d('═══════════════════════════════════════════════════════════');
-    AppLogger.instance.d('📱 FlavorConfig Loaded');
-    AppLogger.instance.d('═══════════════════════════════════════════════════════════');
-    AppLogger.instance.d('🎯 Flavor: ${_instance.flavor.toString().split('.').last.toUpperCase()}');
-    AppLogger.instance.d('📛 App Name: ${_instance.appName}');
-    AppLogger.instance.d('🌐 API Base URL: ${_instance.apiBaseUrl}');
-    AppLogger.instance.d('📊 Firebase Project: ${_instance.firebaseProjectId}');
-    AppLogger.instance.d('📝 Log Level: ${_instance.logLevel}');
-    AppLogger.instance.d('🔍 Debug Mode: ${_instance.enableLogging}');
-    AppLogger.instance.d('📈 Analytics Enabled: ${_instance.enableAnalytics}');
-    AppLogger.instance.d('═══════════════════════════════════════════════════════════');
+    logger.d('═══════════════════════════════════════════════════════════');
+    logger.d('📱 FlavorConfig Loaded');
+    logger.d('═══════════════════════════════════════════════════════════');
+    logger.d('🎯 Flavor: ${_instance.flavor.toString().split('.').last.toUpperCase()}');
+    logger.d('📛 App Name: ${_instance.appName}');
+    logger.d('🌐 API Base URL: ${_instance.apiBaseUrl}');
+    logger.d('📊 Firebase Project: ${_instance.firebaseProjectId}');
+    logger.d('📝 Log Level: ${_instance.logLevel}');
+    logger.d('🔍 Debug Mode: ${_instance.enableLogging}');
+    logger.d('📈 Analytics Enabled: ${_instance.enableAnalytics}');
+    logger.d('═══════════════════════════════════════════════════════════');
   }
 
   /// Check if the app is running in a specific flavor
