@@ -35,32 +35,40 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
-  # HTTP and networking - for API calls
-  http: ^1.1.0              # Simple HTTP client
-  dio: ^5.3.0               # More advanced HTTP client with interceptors
+  # HTTP and networking
+  http: ^1.1.0
+  dio: ^5.3.0
 
-  # State management - for managing app state
-  provider: ^6.0.0          # Simple & powerful state management
+  # State management — BLoC pattern
+  flutter_bloc: ^8.1.0
+  equatable: ^2.0.5
 
-  # Local storage - for storing data on device
-  shared_preferences: ^2.2.0 # Store key-value pairs locally
+  # Dependency injection
+  get_it: ^7.6.0
 
-  # Logging - for better debugging
-  logger: ^2.0.0            # Nice formatted logs
+  # Local storage
+  shared_preferences: ^2.2.0
+
+  # Logging
+  logger: ^2.0.0
 
   # Environment configuration
-  flutter_dotenv: ^5.1.0    # Load .env files for API URLs etc
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^6.0.0
+
+  # BLoC unit testing
+  bloc_test: ^9.1.0
+
+  # Mocking for tests
+  mockito: ^5.4.0
+
+  # Code generation (required by mockito)
+  build_runner: ^2.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

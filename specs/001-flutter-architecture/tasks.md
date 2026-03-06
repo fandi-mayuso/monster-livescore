@@ -17,10 +17,10 @@
 
 **Purpose**: Update dependencies and create the full directory scaffold before any code is written.
 
-- [ ] T001 Update `pubspec.yaml`: add `flutter_bloc: ^8.1.0`, `equatable: ^2.0.5`, `get_it: ^7.6.0` to dependencies; add `bloc_test: ^9.1.0`, `mockito: ^5.4.0`, `build_runner: ^2.4.0` to dev_dependencies; remove `provider`
-- [ ] T002 Run `flutter pub get` to install updated dependencies and confirm no resolution errors
-- [ ] T003 [P] Create source directory scaffold: `lib/core/{config,constants,error,network/interceptors,theme,router,usecases,utils}`, `lib/shared/{domain/{entities,repositories,usecases},data/{models,datasources,repositories}}`, `lib/features/` (empty, ready for feature modules)
-- [ ] T004 [P] Create test directory scaffold: `test/unit/{core,shared/{domain,data},features/example/{bloc,domain,data}}`, `test/widget/features/example/`, `test/integration/features/example/`
+- [x] T001 Update `pubspec.yaml`: add `flutter_bloc: ^8.1.0`, `equatable: ^2.0.5`, `get_it: ^7.6.0` to dependencies; add `bloc_test: ^9.1.0`, `mockito: ^5.4.0`, `build_runner: ^2.4.0` to dev_dependencies; remove `provider`
+- [x] T002 Run `flutter pub get` to install updated dependencies and confirm no resolution errors
+- [x] T003 [P] Create source directory scaffold: `lib/core/{config,constants,error,network/interceptors,theme,router,usecases,utils}`, `lib/shared/{domain/{entities,repositories,usecases},data/{models,datasources,repositories}}`, `lib/features/` (empty, ready for feature modules)
+- [x] T004 [P] Create test directory scaffold: `test/unit/{core,shared/{domain,data},features/example/{bloc,domain,data}}`, `test/widget/features/example/`, `test/integration/features/example/`
 
 **Checkpoint**: Dependencies installed, all directories exist — no implementation yet.
 
