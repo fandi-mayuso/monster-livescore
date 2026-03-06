@@ -9,17 +9,21 @@ import 'package:monster_livescore/core/utils/app_logger.dart';
 /// - [DioExceptionType.connectionTimeout]
 /// - [DioExceptionType.receiveTimeout]
 ///
-/// Backoff delays: 1 s → 2 s → 4 s.
-/// After all retries are exhausted, throws a [NetworkException].
+/// Backoff schedule: 1 s → 2 s → 4 s (base × 2^attempt).
+///
+/// After exhausting all retries, the interceptor rejects the request with a
+/// [DioException] whose `error` is a [NetworkException] with the message
+/// `"Max retries exceeded"`.
+///
+/// Each retry attempt is logged via [AppLogger] at warning level so the
+/// full retry timeline is visible in dev/staging logs.
 class RetryInterceptor extends Interceptor {
   /// Maximum number of retry attempts before giving up.
   final int maxRetries;
 
-  /// Base backoff duration. Actual delay = [_baseDelay] * 2^attempt.
   static const _baseDelay = Duration(seconds: 1);
 
   final Dio _dio;
-  final _logger = AppLogger.instance;
 
   /// Creates a [RetryInterceptor] that uses [dio] to replay failed requests.
   RetryInterceptor({required Dio dio, this.maxRetries = 3}) : _dio = dio;
@@ -29,41 +33,46 @@ class RetryInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
-    final isTimeout = err.type == DioExceptionType.connectionTimeout ||
+    final isRetryable = err.type == DioExceptionType.connectionTimeout ||
         err.type == DioExceptionType.receiveTimeout;
 
-    if (!isTimeout) {
+    if (!isRetryable) {
       return handler.next(err);
     }
 
     final attempt = (err.requestOptions.extra['retryCount'] as int?) ?? 0;
 
     if (attempt >= maxRetries) {
-      _logger.e('Max retries ($maxRetries) exceeded for ${err.requestOptions.uri}');
+      const message = 'Max retries exceeded';
+      logger.e(
+        '$message — ${err.requestOptions.method} ${err.requestOptions.uri} '
+        '(tried $maxRetries time${maxRetries == 1 ? '' : 's'})',
+      );
       return handler.reject(
         DioException(
           requestOptions: err.requestOptions,
-          error: NetworkException(
-            message: 'Max retries exceeded for ${err.requestOptions.uri}',
-          ),
+          error: const NetworkException(message: message),
           type: DioExceptionType.unknown,
         ),
       );
     }
 
     final delay = _baseDelay * (1 << attempt); // 1s, 2s, 4s
-    _logger.w(
-      'Timeout on ${err.requestOptions.uri} — '
-      'retry ${attempt + 1}/$maxRetries in ${delay.inSeconds}s',
+    logger.w(
+      '⟳ Retry ${attempt + 1}/$maxRetries for '
+      '${err.requestOptions.method} ${err.requestOptions.uri} '
+      '— waiting ${delay.inSeconds}s (${err.type.name})',
     );
 
     await Future<void>.delayed(delay);
 
-    final options = err.requestOptions
-      ..extra['retryCount'] = attempt + 1;
+    err.requestOptions.extra['retryCount'] = attempt + 1;
 
     try {
-      final response = await _dio.fetch<dynamic>(options);
+      final response = await _dio.fetch<dynamic>(err.requestOptions);
+      logger.i(
+        '✓ Retry ${attempt + 1} succeeded for ${err.requestOptions.uri}',
+      );
       return handler.resolve(response);
     } on DioException catch (retryErr) {
       return handler.next(retryErr);

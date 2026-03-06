@@ -35,15 +35,16 @@ class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
     final result = await _getExamples(const NoParams());
 
     if (result.failure != null) {
+      final failure = result.failure!;
       logger.e(
-        'ExampleBloc: fetch failed — ${result.failure!.message}',
+        'ExampleBloc: fetch failed\n'
+        '  Type   : ${failure.runtimeType}\n'
+        '  Message: ${failure.message}',
       );
-      emit(
-        ExampleError(
-          failure: result.failure!,
-          userMessage: _toUserMessage(result.failure!),
-        ),
-      );
+      emit(ExampleError(
+        failure: failure,
+        userMessage: _toUserMessage(failure),
+      ));
     } else {
       emit(ExampleLoaded(result.data ?? []));
     }
