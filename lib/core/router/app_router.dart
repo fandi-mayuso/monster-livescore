@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:monster_livescore/injection_container.dart';
+import '../../features/example/presentation/bloc/example_bloc.dart';
+import '../../features/example/presentation/pages/example_page.dart';
 
 /// Named route constants for the entire app.
 ///
@@ -27,19 +31,13 @@ class _HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Monster Livescore')),
-      body: const Center(child: Text('Home — coming soon')),
-    );
-  }
-}
-
-class _ExampleScreen extends StatelessWidget {
-  const _ExampleScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Example')),
-      body: const Center(child: Text('Example feature — coming soon')),
+      body: Center(
+        child: TextButton(
+          onPressed: () =>
+              Navigator.pushNamed(context, AppRoutes.example),
+          child: const Text('Open Example Feature →'),
+        ),
+      ),
     );
   }
 }
@@ -62,6 +60,10 @@ abstract final class AppRouter {
 
   static Map<String, WidgetBuilder> get routes => {
         AppRoutes.home: (_) => const _HomeScreen(),
-        AppRoutes.example: (_) => const _ExampleScreen(),
+        AppRoutes.example: (_) => BlocProvider(
+              create: (_) =>
+                  sl<ExampleBloc>()..add(const ExampleStarted()),
+              child: const ExamplePage(),
+            ),
       };
 }

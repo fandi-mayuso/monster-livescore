@@ -4,6 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:monster_livescore/core/config/flavor_config.dart';
 import 'package:monster_livescore/core/network/api_client.dart';
 import 'package:monster_livescore/core/utils/app_logger.dart';
+import 'features/example/data/datasources/example_remote_datasource.dart';
+import 'features/example/data/repositories/example_repository_impl.dart';
+import 'features/example/domain/repositories/example_repository.dart';
+import 'features/example/domain/usecases/get_examples.dart';
+import 'features/example/presentation/bloc/example_bloc.dart';
 
 /// Global service locator instance.
 ///
@@ -37,14 +42,21 @@ Future<void> initDependencies() async {
 
   // ── Feature registrations go below this line ──────────────────────────────
   // Follow the bottom-up order: DataSources → Repositories → UseCases → BLoCs
-  //
-  // Example:
-  // sl.registerLazySingleton<ExampleRemoteDatasource>(
-  //   () => ExampleRemoteDatasourceImpl(dio: sl()),
-  // );
-  // sl.registerLazySingleton<ExampleRepository>(
-  //   () => ExampleRepositoryImpl(remote: sl()),
-  // );
-  // sl.registerLazySingleton(() => GetExamples(repository: sl()));
-  // sl.registerFactory(() => ExampleBloc(getExamples: sl()));
+
+  // ── Example feature ────────────────────────────────────────────────────────
+  sl.registerLazySingleton<ExampleRemoteDatasource>(
+    () => ExampleRemoteDatasourceImpl(dio: sl<Dio>()),
+  );
+
+  sl.registerLazySingleton<ExampleRepository>(
+    () => ExampleRepositoryImpl(remote: sl<ExampleRemoteDatasource>()),
+  );
+
+  sl.registerLazySingleton(
+    () => GetExamples(sl<ExampleRepository>()),
+  );
+
+  sl.registerFactory(
+    () => ExampleBloc(getExamples: sl<GetExamples>()),
+  );
 }
