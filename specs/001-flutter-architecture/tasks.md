@@ -57,12 +57,12 @@
 
 **Independent Test**: Open the project cold and answer "where does a new league screen go?" and "where does an API call go?" correctly within 5 minutes by reading the folder structure and `ARCHITECTURE.md` alone.
 
-- [ ] T019 [P] [US1] Create `lib/core/theme/app_colors.dart`: define all colour tokens as `static const Color` values (primary, secondary, background, surface, error, onPrimary, etc.) — no `Colors.*` literals used anywhere else
-- [ ] T020 [P] [US1] Create `lib/core/theme/app_text_styles.dart`: define typography scale as `static const TextStyle` values (headlineLarge, headlineMedium, bodyLarge, bodyMedium, labelLarge, etc.)
-- [ ] T021 [US1] Create `lib/core/theme/app_theme.dart`: `AppTheme.light()` factory returning `ThemeData` built entirely from `AppColors` and `AppTextStyles` tokens — no hardcoded colours or font sizes inside
-- [ ] T022 [US1] Create `lib/core/router/app_router.dart`: define `class AppRoutes` with `static const String` route name constants; define `AppRouter.routes` map of `String → WidgetBuilder`; include a `/` home route and a `/example` route as stubs
-- [ ] T023 [US1] Update `lib/app.dart`: replace `ThemeData(primarySwatch: Colors.blue)` with `AppTheme.light()`; replace inline `home:` with `initialRoute: AppRoutes.home` and `routes: AppRouter.routes`; wrap with `MultiBlocProvider(providers: [], child: ...)` scaffold ready for future BLoCs
-- [ ] T024 [US1] Create `ARCHITECTURE.md` at repository root documenting: the four top-level directories (`core/`, `shared/`, `features/`, `main/`) and their rules; the dependency direction diagram; the feature-first folder template; the promotion rule for shared entities; the BLoC event/state/bloc three-file pattern; naming conventions (snake_case files, PascalCase classes, `_bloc`, `_event`, `_state`, `_repository`, `_datasource`, `_model` suffixes)
+- [x] T019 [P] [US1] Create `lib/core/theme/app_colors.dart`: define all colour tokens as `static const Color` values (primary, secondary, background, surface, error, onPrimary, etc.) — no `Colors.*` literals used anywhere else
+- [x] T020 [P] [US1] Create `lib/core/theme/app_text_styles.dart`: define typography scale as `static const TextStyle` values (headlineLarge, headlineMedium, bodyLarge, bodyMedium, labelLarge, etc.)
+- [x] T021 [US1] Create `lib/core/theme/app_theme.dart`: `AppTheme.light()` factory returning `ThemeData` built entirely from `AppColors` and `AppTextStyles` tokens — no hardcoded colours or font sizes inside
+- [x] T022 [US1] Create `lib/core/router/app_router.dart`: define `class AppRoutes` with `static const String` route name constants; define `AppRouter.routes` map of `String → WidgetBuilder`; include a `/` home route and a `/example` route as stubs
+- [x] T023 [US1] Update `lib/app.dart`: replace `ThemeData(primarySwatch: Colors.blue)` with `AppTheme.light()`; replace inline `home:` with `initialRoute: AppRoutes.home` and `routes: AppRouter.routes`; wrap with `MultiBlocProvider(providers: [], child: ...)` scaffold ready for future BLoCs
+- [x] T024 [US1] Create `ARCHITECTURE.md` at repository root documenting: the four top-level directories (`core/`, `shared/`, `features/`, `main/`) and their rules; the dependency direction diagram; the feature-first folder template; the promotion rule for shared entities; the BLoC event/state/bloc three-file pattern; naming conventions (snake_case files, PascalCase classes, `_bloc`, `_event`, `_state`, `_repository`, `_datasource`, `_model` suffixes)
 
 **Checkpoint ✅ US1 Done**: New developer can read `ARCHITECTURE.md` and the folder tree and correctly place any type of code. Theme and router are centralised with zero hardcoded values.
 
