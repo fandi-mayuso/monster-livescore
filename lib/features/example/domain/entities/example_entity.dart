@@ -7,7 +7,10 @@ import 'package:equatable/equatable.dart';
 /// - Extend [Equatable] and override [props] for value equality.
 /// - All fields are final; use `const` constructors.
 class ExampleEntity extends Equatable {
+  /// Unique identifier for this item (matches the API `id` field).
   final String id;
+
+  /// Human-readable display name for this item.
   final String title;
 
   const ExampleEntity({required this.id, required this.title});

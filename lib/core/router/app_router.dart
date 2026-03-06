@@ -58,6 +58,10 @@ class _HomeScreen extends StatelessWidget {
 abstract final class AppRouter {
   AppRouter._();
 
+  /// Route map wired into [MaterialApp.routes].
+  ///
+  /// Keys are [AppRoutes] constants; values are [WidgetBuilder]s that
+  /// wrap the target page in any required [BlocProvider]s.
   static Map<String, WidgetBuilder> get routes => {
         AppRoutes.home: (_) => const _HomeScreen(),
         AppRoutes.example: (_) => BlocProvider(

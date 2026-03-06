@@ -15,6 +15,7 @@ abstract final class AppTextStyles {
 
   // ── Display ────────────────────────────────────────────────────────────────
 
+  /// Largest display text — hero banners, splash screens.
   static const TextStyle displayLarge = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 57,
@@ -23,6 +24,7 @@ abstract final class AppTextStyles {
     height: 1.12,
   );
 
+  /// Medium display text — section hero areas.
   static const TextStyle displayMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 45,
@@ -31,6 +33,7 @@ abstract final class AppTextStyles {
     height: 1.16,
   );
 
+  /// Small display text — prominent but not full-bleed.
   static const TextStyle displaySmall = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 36,
@@ -41,6 +44,7 @@ abstract final class AppTextStyles {
 
   // ── Headline ───────────────────────────────────────────────────────────────
 
+  /// Large headline — screen titles, major section headings.
   static const TextStyle headlineLarge = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 32,
@@ -49,6 +53,7 @@ abstract final class AppTextStyles {
     height: 1.25,
   );
 
+  /// Medium headline — sub-section headings.
   static const TextStyle headlineMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 28,
@@ -57,6 +62,7 @@ abstract final class AppTextStyles {
     height: 1.29,
   );
 
+  /// Small headline — card headings, dialog titles.
   static const TextStyle headlineSmall = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 24,
@@ -67,6 +73,7 @@ abstract final class AppTextStyles {
 
   // ── Title ──────────────────────────────────────────────────────────────────
 
+  /// Large title — app bar titles, list-section headers.
   static const TextStyle titleLarge = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 22,
@@ -75,6 +82,7 @@ abstract final class AppTextStyles {
     height: 1.27,
   );
 
+  /// Medium title — prominent labels, tab bar text.
   static const TextStyle titleMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 16,
@@ -83,6 +91,7 @@ abstract final class AppTextStyles {
     height: 1.50,
   );
 
+  /// Small title — supporting labels, chip text.
   static const TextStyle titleSmall = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14,
@@ -93,6 +102,7 @@ abstract final class AppTextStyles {
 
   // ── Body ───────────────────────────────────────────────────────────────────
 
+  /// Large body — primary readable content.
   static const TextStyle bodyLarge = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 16,
@@ -101,6 +111,7 @@ abstract final class AppTextStyles {
     height: 1.50,
   );
 
+  /// Medium body — default body text throughout the app.
   static const TextStyle bodyMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14,
@@ -109,6 +120,7 @@ abstract final class AppTextStyles {
     height: 1.43,
   );
 
+  /// Small body — captions, footnotes, helper text.
   static const TextStyle bodySmall = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 12,
@@ -119,6 +131,7 @@ abstract final class AppTextStyles {
 
   // ── Label ──────────────────────────────────────────────────────────────────
 
+  /// Large label — button text, prominent interactive labels.
   static const TextStyle labelLarge = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14,
@@ -127,6 +140,7 @@ abstract final class AppTextStyles {
     height: 1.43,
   );
 
+  /// Medium label — badge text, filter chip labels.
   static const TextStyle labelMedium = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 12,
@@ -135,6 +149,7 @@ abstract final class AppTextStyles {
     height: 1.33,
   );
 
+  /// Small label — overline text, smallest interactive labels.
   static const TextStyle labelSmall = TextStyle(
     fontFamily: _fontFamily,
     fontSize: 11,

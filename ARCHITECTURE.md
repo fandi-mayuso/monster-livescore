@@ -269,42 +269,113 @@ Retrieve with `sl<T>()`. Never construct dependencies with `SomeThing()` outside
 
 ## Naming Conventions
 
-### Files — `snake_case`
+> All naming conventions below are **enforced at CI** via `flutter analyze`.
+> `analysis_options.yaml` activates `prefer_const_constructors`,
+> `prefer_const_declarations`, `require_trailing_commas`, `avoid_print`,
+> and `prefer_single_quotes`.
 
-| Artefact | Suffix | Example |
-|----------|--------|---------|
-| Entity | `_entity` | `match_entity.dart` |
-| Model | `_model` | `match_model.dart` |
-| Repository contract | `_repository` | `matches_repository.dart` |
-| Repository impl | `_repository_impl` | `matches_repository_impl.dart` |
-| DataSource contract | `_datasource` | `matches_remote_datasource.dart` |
-| DataSource impl | `_datasource_impl` | `matches_remote_datasource_impl.dart` |
-| UseCase | verb phrase | `get_live_matches.dart` |
-| BLoC | `_bloc` | `live_matches_bloc.dart` |
-| Event | `_event` | `live_matches_event.dart` |
-| State | `_state` | `live_matches_state.dart` |
-| Page | `_page` | `live_matches_page.dart` |
-| Widget | descriptive | `match_card.dart` |
+### Files — `snake_case` with role suffix
 
-### Classes — `PascalCase`
+Every file name must end with a suffix that identifies its architectural role.
+This makes the purpose of any file obvious without opening it.
+
+| Artefact | Suffix | Example file | Example class |
+|----------|--------|-------------|---------------|
+| Entity | `_entity` | `match_entity.dart` | `MatchEntity` |
+| JSON model | `_model` | `match_model.dart` | `MatchModel` |
+| Repository contract | `_repository` | `matches_repository.dart` | `MatchesRepository` |
+| Repository impl | `_repository_impl` | `matches_repository_impl.dart` | `MatchesRepositoryImpl` |
+| DataSource contract | `_datasource` | `matches_remote_datasource.dart` | `MatchesRemoteDatasource` |
+| DataSource impl | `_datasource_impl` | `matches_remote_datasource_impl.dart` | `MatchesRemoteDatasourceImpl` |
+| UseCase | verb phrase | `get_live_matches.dart` | `GetLiveMatches` |
+| BLoC | `_bloc` | `live_matches_bloc.dart` | `LiveMatchesBloc` |
+| BLoC events | `_event` | `live_matches_event.dart` | `LiveMatchesEvent` |
+| BLoC states | `_state` | `live_matches_state.dart` | `LiveMatchesState` |
+| Page (full screen) | `_page` | `live_matches_page.dart` | `LiveMatchesPage` |
+| Reusable widget | descriptive | `match_card.dart` | `MatchCard` |
+
+### Classes — `PascalCase` matching the file name
+
+The class name must be the PascalCase version of the file name (without the `.dart` extension).
 
 ```
-MatchEntity, MatchModel, MatchesRepository, MatchesRepositoryImpl
-MatchesRemoteDatasource, MatchesRemoteDatasourceImpl
-GetLiveMatches
-LiveMatchesBloc, LiveMatchesEvent, LiveMatchesState
-LiveMatchesPage, MatchCard
+match_entity.dart         →  class MatchEntity
+matches_repository.dart   →  abstract class MatchesRepository
+matches_repository_impl.dart  →  class MatchesRepositoryImpl
+get_live_matches.dart     →  class GetLiveMatches
+live_matches_bloc.dart    →  class LiveMatchesBloc
+live_matches_page.dart    →  class LiveMatchesPage
 ```
 
-### Events & States — sealed + `final`
+### No Abbreviations in Public Names
+
+Public class names, method names, and field names must not use abbreviations.
 
 ```dart
-sealed class LiveMatchesEvent  { ... }   // abstract base
-final class LiveMatchesStarted { ... }   // concrete event
+// ❌ Bad
+class MatchRepo { ... }
+class GetMatchsUC { ... }
+String usrId;
 
-sealed class LiveMatchesState  { ... }   // abstract base
-final class LiveMatchesLoading { ... }   // concrete state
+// ✅ Good
+class MatchesRepository { ... }
+class GetLiveMatches { ... }
+String userId;
 ```
+
+### Events & States — Dart 3 sealed + `final class`
+
+BLoC events and states use Dart 3's exhaustive sealed class pattern.
+The base class is `sealed`, all concrete subtypes use `final class`.
+
+```dart
+// Base — sealed so the switch is exhaustive at compile time
+sealed class LiveMatchesEvent extends Equatable {
+  const LiveMatchesEvent();
+}
+
+// Concrete events — final class (cannot be subclassed further)
+final class LiveMatchesStarted extends LiveMatchesEvent {
+  const LiveMatchesStarted();
+  @override List<Object?> get props => [];
+}
+
+final class LiveMatchesRefreshed extends LiveMatchesEvent {
+  const LiveMatchesRefreshed();
+  @override List<Object?> get props => [];
+}
+
+// States follow the same pattern
+sealed class LiveMatchesState extends Equatable {
+  const LiveMatchesState();
+}
+
+final class LiveMatchesInitial  extends LiveMatchesState { ... }
+final class LiveMatchesLoading  extends LiveMatchesState { ... }
+final class LiveMatchesLoaded   extends LiveMatchesState { ... }
+final class LiveMatchesError    extends LiveMatchesState { ... }
+```
+
+The exhaustive `switch` in the page guarantees **every state is handled** at compile time — no runtime `default` case required:
+
+```dart
+switch (state) {
+  LiveMatchesInitial()  => const SizedBox.shrink(),
+  LiveMatchesLoading()  => const CircularProgressIndicator(),
+  LiveMatchesLoaded()   => _buildList(state.matches),
+  LiveMatchesError()    => _buildError(state.userMessage),
+}
+```
+
+### Linter Enforcement
+
+| Rule | Effect |
+|------|--------|
+| `avoid_print` | Forces use of `AppLogger` — no raw `print()` |
+| `prefer_const_constructors` | Ensures widgets and value objects are `const` where possible |
+| `prefer_const_declarations` | Ensures local variables holding constant values are declared `const` |
+| `require_trailing_commas` | Keeps multi-line arg lists consistently formatted |
+| `prefer_single_quotes` | Enforces consistent string literal style |
 
 ---
 

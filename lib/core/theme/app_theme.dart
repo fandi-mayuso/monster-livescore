@@ -17,7 +17,7 @@ abstract final class AppTheme {
 
   /// Default dark theme tailored for a livescore experience.
   static ThemeData dark() {
-    final colorScheme = ColorScheme(
+    const colorScheme = ColorScheme(
       brightness: Brightness.dark,
       primary: AppColors.primary,
       onPrimary: AppColors.onPrimary,
@@ -104,7 +104,7 @@ abstract final class AppTheme {
 
   /// Light variant — kept for future design-system parity.
   static ThemeData light() {
-    final colorScheme = ColorScheme(
+    const colorScheme = ColorScheme(
       brightness: Brightness.light,
       primary: AppColors.primary,
       onPrimary: AppColors.onPrimary,
@@ -114,16 +114,16 @@ abstract final class AppTheme {
       onSecondary: AppColors.onSecondary,
       secondaryContainer: AppColors.secondaryContainer,
       onSecondaryContainer: AppColors.onSecondaryContainer,
-      surface: const Color(0xFFFFFFFF),
-      onSurface: const Color(0xFF1A1A1A),
-      surfaceContainerHighest: const Color(0xFFF5F5F5),
-      onSurfaceVariant: const Color(0xFF666666),
+      surface: Color(0xFFFFFFFF),
+      onSurface: Color(0xFF1A1A1A),
+      surfaceContainerHighest: Color(0xFFF5F5F5),
+      onSurfaceVariant: Color(0xFF666666),
       error: AppColors.error,
       onError: AppColors.onError,
       errorContainer: AppColors.errorContainer,
       onErrorContainer: AppColors.onErrorContainer,
-      outline: const Color(0xFFE0E0E0),
-      outlineVariant: const Color(0xFFF0F0F0),
+      outline: Color(0xFFE0E0E0),
+      outlineVariant: Color(0xFFF0F0F0),
     );
 
     return ThemeData(

@@ -18,7 +18,7 @@ import 'package:monster_livescore/core/utils/app_logger.dart';
 /// Each retry attempt is logged via [AppLogger] at warning level so the
 /// full retry timeline is visible in dev/staging logs.
 class RetryInterceptor extends Interceptor {
-  /// Maximum number of retry attempts before giving up.
+  /// Maximum number of retry attempts before the request is permanently rejected.
   final int maxRetries;
 
   static const _baseDelay = Duration(seconds: 1);
