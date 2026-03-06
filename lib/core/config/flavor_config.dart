@@ -1,4 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:monster_livescore/core/utils/app_logger.dart';
 
 /// Enum to identify which environment/flavor is running
 enum Flavor { dev, staging, prod }
@@ -108,20 +109,20 @@ class FlavorConfig {
         value == '1';
   }
 
-  /// Log the current configuration
-  /// Useful for debugging to confirm correct flavor loaded
+  /// Log the current configuration.
+  /// Useful for debugging to confirm correct flavor loaded.
   static void _logConfiguration() {
-    print('═══════════════════════════════════════════════════════════');
-    print('📱 FlavorConfig Loaded');
-    print('═══════════════════════════════════════════════════════════');
-    print('🎯 Flavor: ${_instance.flavor.toString().split('.').last.toUpperCase()}');
-    print('📛 App Name: ${_instance.appName}');
-    print('🌐 API Base URL: ${_instance.apiBaseUrl}');
-    print('📊 Firebase Project: ${_instance.firebaseProjectId}');
-    print('📝 Log Level: ${_instance.logLevel}');
-    print('🔍 Debug Mode: ${_instance.enableLogging}');
-    print('📈 Analytics Enabled: ${_instance.enableAnalytics}');
-    print('═══════════════════════════════════════════════════════════');
+    AppLogger.instance.d('═══════════════════════════════════════════════════════════');
+    AppLogger.instance.d('📱 FlavorConfig Loaded');
+    AppLogger.instance.d('═══════════════════════════════════════════════════════════');
+    AppLogger.instance.d('🎯 Flavor: ${_instance.flavor.toString().split('.').last.toUpperCase()}');
+    AppLogger.instance.d('📛 App Name: ${_instance.appName}');
+    AppLogger.instance.d('🌐 API Base URL: ${_instance.apiBaseUrl}');
+    AppLogger.instance.d('📊 Firebase Project: ${_instance.firebaseProjectId}');
+    AppLogger.instance.d('📝 Log Level: ${_instance.logLevel}');
+    AppLogger.instance.d('🔍 Debug Mode: ${_instance.enableLogging}');
+    AppLogger.instance.d('📈 Analytics Enabled: ${_instance.enableAnalytics}');
+    AppLogger.instance.d('═══════════════════════════════════════════════════════════');
   }
 
   /// Check if the app is running in a specific flavor

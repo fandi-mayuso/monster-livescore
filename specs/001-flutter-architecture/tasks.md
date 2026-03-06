@@ -32,20 +32,20 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T005 Move `lib/config/flavor_config.dart` → `lib/core/config/flavor_config.dart`; update import in `lib/app.dart` and all `lib/main/*.dart` files accordingly
-- [ ] T006 [P] Move `lib/constants/app_constants.dart` → `lib/core/constants/app_constants.dart`; update any imports that reference the old path
-- [ ] T007 Create `lib/core/error/exceptions.dart` with five typed exception classes: `ServerException(statusCode, message)`, `CacheException(message)`, `NetworkException(message)`, `UnauthorisedException(message)`, `ValidationException(message)` — all extending `Exception`
-- [ ] T008 Create `lib/core/error/failures.dart` with `sealed class Failure { final String message; }` and five subtypes: `ServerFailure`, `NetworkFailure`, `CacheFailure`, `UnauthorisedFailure`, `UnexpectedFailure` — all extending `Failure` with `const` constructors
-- [ ] T009 Create `lib/core/usecases/usecase.dart` with `abstract class UseCase<Type, Params>` defining `Future<({Type? data, Failure? failure})> call(Params params)`, plus `class NoParams {}` sentinel
-- [ ] T010 Create `lib/core/utils/app_logger.dart` wrapping the `logger` package: expose a singleton `AppLogger.instance` with `d()`, `i()`, `w()`, `e()` methods; log level driven by `FlavorConfig.instance.logLevel`
-- [ ] T011 Replace all `print()` calls in `lib/core/config/flavor_config.dart` (`_logConfiguration` method) with `AppLogger.instance.d()`
-- [ ] T012 [P] Create `lib/core/utils/typedef.dart` with shared type alias: `typedef ResultFuture<T> = Future<({T? data, Failure? failure})>;`
-- [ ] T013 Create `lib/core/network/interceptors/logging_interceptor.dart`: `LoggingInterceptor extends Interceptor` — logs request method + URL on `onRequest`; logs status code + duration on `onResponse`; logs error on `onError`; uses `AppLogger`; only active when `FlavorConfig.instance.enableLogging` is true
-- [ ] T014 [P] Create `lib/core/network/interceptors/auth_interceptor.dart`: `AuthInterceptor extends Interceptor` — injects `Authorization` header on `onRequest` (reads token from SharedPreferences key `auth_token`; skips if absent)
-- [ ] T015 [P] Create `lib/core/network/interceptors/retry_interceptor.dart`: `RetryInterceptor extends Interceptor` — retries on `DioExceptionType.connectionTimeout` and `receiveTimeout` up to 3 times with 1s/2s/4s exponential backoff; throws `NetworkException` after final failure
-- [ ] T016 Create `lib/core/network/api_client.dart`: factory function `createDio(FlavorConfig config)` returning a `Dio` instance with `baseUrl` from `config.apiBaseUrl`, `connectTimeout: 30s`, `receiveTimeout: 30s`, and all three interceptors added in order: `LoggingInterceptor`, `AuthInterceptor`, `RetryInterceptor`
-- [ ] T017 Create `lib/injection_container.dart`: initialise `GetIt sl = GetIt.instance`; register `SharedPreferences` as lazy singleton (async via `await SharedPreferences.getInstance()`); register `Dio` (via `createDio`) as lazy singleton; register `AppLogger.instance` as lazy singleton
-- [ ] T018 Update all three `lib/main/main_*.dart` files to call `WidgetsFlutterBinding.ensureInitialized()` and `await initDependencies()` (a top-level async function in `injection_container.dart`) before `runApp()`
+- [x] T005 Move `lib/config/flavor_config.dart` → `lib/core/config/flavor_config.dart`; update import in `lib/app.dart` and all `lib/main/*.dart` files accordingly
+- [x] T006 [P] Move `lib/constants/app_constants.dart` → `lib/core/constants/app_constants.dart`; update any imports that reference the old path
+- [x] T007 Create `lib/core/error/exceptions.dart` with five typed exception classes: `ServerException(statusCode, message)`, `CacheException(message)`, `NetworkException(message)`, `UnauthorisedException(message)`, `ValidationException(message)` — all extending `Exception`
+- [x] T008 Create `lib/core/error/failures.dart` with `sealed class Failure { final String message; }` and five subtypes: `ServerFailure`, `NetworkFailure`, `CacheFailure`, `UnauthorisedFailure`, `UnexpectedFailure` — all extending `Failure` with `const` constructors
+- [x] T009 Create `lib/core/usecases/usecase.dart` with `abstract class UseCase<Type, Params>` defining `Future<({Type? data, Failure? failure})> call(Params params)`, plus `class NoParams {}` sentinel
+- [x] T010 Create `lib/core/utils/app_logger.dart` wrapping the `logger` package: expose a singleton `AppLogger.instance` with `d()`, `i()`, `w()`, `e()` methods; log level driven by `FlavorConfig.instance.logLevel`
+- [x] T011 Replace all `print()` calls in `lib/core/config/flavor_config.dart` (`_logConfiguration` method) with `AppLogger.instance.d()`
+- [x] T012 [P] Create `lib/core/utils/typedef.dart` with shared type alias: `typedef ResultFuture<T> = Future<({T? data, Failure? failure})>;`
+- [x] T013 Create `lib/core/network/interceptors/logging_interceptor.dart`: `LoggingInterceptor extends Interceptor` — logs request method + URL on `onRequest`; logs status code + duration on `onResponse`; logs error on `onError`; uses `AppLogger`; only active when `FlavorConfig.instance.enableLogging` is true
+- [x] T014 [P] Create `lib/core/network/interceptors/auth_interceptor.dart`: `AuthInterceptor extends Interceptor` — injects `Authorization` header on `onRequest` (reads token from SharedPreferences key `auth_token`; skips if absent)
+- [x] T015 [P] Create `lib/core/network/interceptors/retry_interceptor.dart`: `RetryInterceptor extends Interceptor` — retries on `DioExceptionType.connectionTimeout` and `receiveTimeout` up to 3 times with 1s/2s/4s exponential backoff; throws `NetworkException` after final failure
+- [x] T016 Create `lib/core/network/api_client.dart`: factory function `createDio(FlavorConfig config)` returning a `Dio` instance with `baseUrl` from `config.apiBaseUrl`, `connectTimeout: 30s`, `receiveTimeout: 30s`, and all three interceptors added in order: `LoggingInterceptor`, `AuthInterceptor`, `RetryInterceptor`
+- [x] T017 Create `lib/injection_container.dart`: initialise `GetIt sl = GetIt.instance`; register `SharedPreferences` as lazy singleton (async via `await SharedPreferences.getInstance()`); register `Dio` (via `createDio`) as lazy singleton; register `AppLogger.instance` as lazy singleton
+- [x] T018 Update all three `lib/main/main_*.dart` files to call `WidgetsFlutterBinding.ensureInitialized()` and `await initDependencies()` (a top-level async function in `injection_container.dart`) before `runApp()`
 
 **Checkpoint**: Core infrastructure is wired — errors, logging, networking, and DI are ready. User story work can now begin.
 

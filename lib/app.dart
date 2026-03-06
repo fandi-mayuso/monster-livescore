@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'config/flavor_config.dart';
+import 'core/config/flavor_config.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
