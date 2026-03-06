@@ -420,3 +420,62 @@ switch (state) {
 ```
 
 See `specs/001-flutter-architecture/quickstart.md` for the full step-by-step guide.
+
+---
+
+## Testing
+
+### Test directory layout
+
+```
+test/
+├── unit/
+│   ├── core/                  ← Tests for logger, typedef, interceptors, etc.
+│   ├── features/
+│   │   └── <feature>/
+│   │       ├── bloc/          ← BLoC unit tests (use bloc_test package)
+│   │       ├── domain/        ← UseCase unit tests (mock repository)
+│   │       └── data/          ← DataSource & repository impl tests (mock Dio)
+│   └── shared/
+│       ├── domain/
+│       └── data/
+├── widget/
+│   └── features/
+│       └── <feature>/         ← Widget tests for pages and widgets
+└── integration_test/          ← End-to-end tests (requires device/emulator)
+```
+
+### Running tests
+
+```bash
+# All tests with coverage report
+flutter test --coverage
+
+# Single test file
+flutter test test/unit/features/example/bloc/example_bloc_test.dart
+
+# Generate lcov HTML report (requires lcov installed)
+genhtml coverage/lcov.info -o coverage/html
+
+# Generate mocks after adding @GenerateMocks annotations
+dart run build_runner build --delete-conflicting-outputs
+
+# Integration tests (requires connected device)
+flutter test integration_test/
+```
+
+### Coverage baseline
+
+| Phase | Tests | Coverage |
+|-------|-------|----------|
+| Architecture setup (this PR) | 1 smoke test | ~2% (infrastructure only) |
+
+> **Target**: ≥ 80% line coverage on business logic (domain + data layers) per the project constitution.  
+> Add unit tests alongside every new BLoC, UseCase, and RepositoryImpl you create.
+
+### Mocking conventions
+
+- Use `mockito` with `@GenerateMocks([MyClass])` annotation for auto-generated mocks.
+- Repositories are the primary seam for mocking in UseCase tests.
+- `Dio` is mocked via `mockito` in DataSource tests (do not hit real endpoints in unit tests).
+- BLoC tests use `bloc_test` package (`blocTest(...)` helper).

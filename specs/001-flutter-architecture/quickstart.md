@@ -112,12 +112,12 @@ class [Entity] extends Equatable {
 `lib/features/[feature]/domain/repositories/[feature]_repository.dart`
 
 ```dart
-import 'package:monster_livescore/core/error/failures.dart';
+import 'package:monster_livescore/core/utils/typedef.dart';
 import 'package:monster_livescore/features/[feature]/domain/entities/[entity].dart';
 
 abstract class [Feature]Repository {
-  Future<({[Entity]? data, Failure? failure})> get[Entity](String id);
-  Future<({List<[Entity]>? data, Failure? failure})> get[Entity]List();
+  ResultFuture<[Entity]> get[Entity](String id);
+  ResultFuture<List<[Entity]>> get[Entity]List();
 }
 ```
 
@@ -126,8 +126,8 @@ abstract class [Feature]Repository {
 `lib/features/[feature]/domain/usecases/get_[entity]_list.dart`
 
 ```dart
-import 'package:monster_livescore/core/error/failures.dart';
 import 'package:monster_livescore/core/usecases/usecase.dart';
+import 'package:monster_livescore/core/utils/typedef.dart';
 import 'package:monster_livescore/features/[feature]/domain/entities/[entity].dart';
 import 'package:monster_livescore/features/[feature]/domain/repositories/[feature]_repository.dart';
 
@@ -138,7 +138,7 @@ class Get[Entity]List implements UseCase<List<[Entity]>, NoParams> {
       : _repository = repository;
 
   @override
-  Future<({List<[Entity]>? data, Failure? failure})> call(NoParams params) {
+  ResultFuture<List<[Entity]>> call(NoParams params) {
     return _repository.get[Entity]List();
   }
 }
@@ -207,6 +207,7 @@ class [Feature]RemoteDatasourceImpl implements [Feature]RemoteDatasource {
 ```dart
 import 'package:monster_livescore/core/error/exceptions.dart';
 import 'package:monster_livescore/core/error/failures.dart';
+import 'package:monster_livescore/core/utils/typedef.dart';
 import 'package:monster_livescore/features/[feature]/data/datasources/[feature]_remote_datasource.dart';
 import 'package:monster_livescore/features/[feature]/domain/entities/[entity].dart';
 import 'package:monster_livescore/features/[feature]/domain/repositories/[feature]_repository.dart';
@@ -218,15 +219,17 @@ class [Feature]RepositoryImpl implements [Feature]Repository {
       : _remote = remote;
 
   @override
-  Future<({[Entity]? data, Failure? failure})> get[Entity](String id) {
+  ResultFuture<[Entity]> get[Entity](String id) async {
     throw UnimplementedError(); // implement as needed
   }
 
   @override
-  Future<({List<[Entity]>? data, Failure? failure})> get[Entity]List() async {
+  ResultFuture<List<[Entity]>> get[Entity]List() async {
     try {
       final models = await _remote.fetch[Entity]List();
-      return (data: models, failure: null);
+      // List<[Entity]Model> cannot be directly returned as List<[Entity]> —
+      // use List<[Entity]>.from() to perform the covariant cast safely.
+      return (data: List<[Entity]>.from(models), failure: null);
     } on ServerException catch (e) {
       return (data: null, failure: ServerFailure(message: e.message));
     } on NetworkException catch (e) {
@@ -243,7 +246,7 @@ class [Feature]RepositoryImpl implements [Feature]Repository {
 **Events** — `lib/features/[feature]/presentation/bloc/[feature]_event.dart`
 
 ```dart
-import 'package:equatable/equatable.dart';
+part of '[feature]_bloc.dart';
 
 sealed class [Feature]Event extends Equatable {
   const [Feature]Event();
@@ -262,9 +265,7 @@ final class [Feature]Refreshed extends [Feature]Event {
 **States** — `lib/features/[feature]/presentation/bloc/[feature]_state.dart`
 
 ```dart
-import 'package:equatable/equatable.dart';
-import 'package:monster_livescore/core/error/failures.dart';
-import 'package:monster_livescore/features/[feature]/domain/entities/[entity].dart';
+part of '[feature]_bloc.dart';
 
 sealed class [Feature]State extends Equatable {
   const [Feature]State();
@@ -296,11 +297,15 @@ final class [Feature]Error extends [Feature]State {
 **BLoC** — `lib/features/[feature]/presentation/bloc/[feature]_bloc.dart`
 
 ```dart
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:monster_livescore/core/error/failures.dart';
 import 'package:monster_livescore/core/usecases/usecase.dart';
+import 'package:monster_livescore/features/[feature]/domain/entities/[entity].dart';
 import 'package:monster_livescore/features/[feature]/domain/usecases/get_[entity]_list.dart';
-import '[feature]_event.dart';
-import '[feature]_state.dart';
+
+part '[feature]_event.dart';
+part '[feature]_state.dart';
 
 class [Feature]Bloc extends Bloc<[Feature]Event, [Feature]State> {
   final Get[Entity]List _get[Entity]List;
@@ -425,7 +430,7 @@ The `injection_container.dart` registration stays the same — the concrete clas
 | Business logic location | Inside BLoC | Inside widget `build()` |
 | Error propagation | Return `Failure` from repository | Throw exceptions past repository boundary |
 | State equality | Use `Equatable` on all states/events | Manual `==` override |
-| Logging | `AppLogger.instance.d('msg')` | `print('msg')` |
+| Logging | `logger.d('msg')` | `print('msg')` |
 | Colours | `AppColors.primary` | `Colors.blue` |
 | Constants | `AppConstants.apiTimeout` | Inline `'30'` |
 | Entity used by 1 feature | `features/[f]/domain/entities/` | — |

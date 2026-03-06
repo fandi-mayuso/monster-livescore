@@ -139,4 +139,32 @@ class FlavorConfig {
 
   /// Get flavor name in uppercase
   String getFlavorNameUpperCase() => getFlavorName().toUpperCase();
+
+  /// Initialises the singleton directly from values — **only for use in tests**.
+  ///
+  /// Call this instead of [setFlavor] in widget and unit tests to avoid
+  /// loading `.env` files that are not present in the test environment.
+  ///
+  /// ```dart
+  /// setUp(() => FlavorConfig.setForTest());
+  /// ```
+  static void setForTest({
+    Flavor flavor = Flavor.dev,
+    String apiBaseUrl = 'https://test.example.com',
+    String appName = 'Monster Livescore Test',
+    bool enableLogging = false,
+    String firebaseProjectId = 'test-project',
+    String logLevel = 'DEBUG',
+    bool enableAnalytics = false,
+  }) {
+    _instance = FlavorConfig(
+      flavor: flavor,
+      apiBaseUrl: apiBaseUrl,
+      appName: appName,
+      enableLogging: enableLogging,
+      firebaseProjectId: firebaseProjectId,
+      logLevel: logLevel,
+      enableAnalytics: enableAnalytics,
+    );
+  }
 }
