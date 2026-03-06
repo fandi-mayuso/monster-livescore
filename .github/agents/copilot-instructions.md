@@ -9,8 +9,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-06
 ## Project Structure
 
 ```text
-src/
-tests/
+lib/
+test/
 ```
 
 ## Commands
